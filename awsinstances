@@ -1,0 +1,10 @@
+#!/bin/bash
+
+PROFILE_AWS=$1
+
+if [ -z $PROFILE_AWS ];
+then
+	PROFILE_AWS="default"
+fi
+
+aws ec2 describe-instances --profile ${PROFILE_AWS} --region eu-central-1 --query 'Reservations[*].Instances[*].[InstanceId, Tags[?Key==`Name`].Value | [0], InstanceType, State.Name, Tags[?Key==`Project`].Value | [0], Tags[?Key==`Stages`].Value | [0], Tags[?Key==`Roles`].Value | [0], PublicIpAddress]' --output=table
